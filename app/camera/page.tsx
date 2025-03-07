@@ -1,3 +1,13 @@
+/**
+ * Camera Mode Page
+ * 
+ * This page runs on the mobile device and handles:
+ * 1. Camera access and streaming
+ * 2. WebRTC connection to the viewer
+ * 3. Front/back camera switching
+ * 4. Connection status and error handling
+ */
+
 "use client"
 
 import { useState, useRef, useEffect } from "react"
@@ -40,11 +50,30 @@ export default function CameraPage() {
 
   const startCamera = async () => {
     try {
+      console.log("🎥 Démarrage de la caméra...");
+      console.log("Mode caméra:", isFrontCamera ? "frontale" : "arrière");
+
+      console.log("Vérification de l'environnement...");
+      console.log("Navigateur:", navigator.userAgent);
+      console.log("Contexte sécurisé:", window.isSecureContext);
+      console.log("mediaDevices disponible:", !!navigator.mediaDevices);
+      console.log("getUserMedia disponible:", !!navigator.mediaDevices?.getUserMedia);
+
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error("Navigateur ne supporte pas l'accès à la caméra");
+        throw new Error("Votre navigateur ne supporte pas l'accès à la caméra");
+      }
+
+      if (!window.isSecureContext) {
+        console.error("Contexte non sécurisé - HTTPS requis");
+        throw new Error("L'accès à la caméra nécessite une connexion HTTPS sécurisée");
+      }
+
       if (streamRef.current) {
+        console.log("Arrêt du flux vidéo précédent");
         streamRef.current.getTracks().forEach((track) => track.stop())
       }
 
-      // Définir les contraintes de manière plus explicite
       const constraints = {
         video: {
           facingMode: isFrontCamera ? "user" : "environment",
@@ -54,20 +83,26 @@ export default function CameraPage() {
         audio: true,
       }
 
-      console.log("Demande d'accès à la caméra avec mode:", isFrontCamera ? "frontale" : "arrière")
+      console.log("Contraintes de la caméra:", JSON.stringify(constraints, null, 2));
+      console.log("Demande d'accès à la caméra...");
+      
       const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      console.log("✅ Accès à la caméra accordé!");
+      console.log("Tracks disponibles:", stream.getTracks().map(t => `${t.kind}: ${t.label}`));
+      
       streamRef.current = stream
 
       if (videoRef.current) {
+        console.log("Association du flux à l'élément vidéo");
         videoRef.current.srcObject = stream
       }
 
       setIsStreaming(true)
 
-      // Si nous avons un ID de PC, connectons-nous immédiatement
       const searchParams = new URLSearchParams(window.location.search)
       const idFromUrl = searchParams.get("id")
       if (idFromUrl) {
+        console.log("ID PC détecté dans l'URL:", idFromUrl);
         connectToPC(idFromUrl)
       }
 
@@ -76,10 +111,20 @@ export default function CameraPage() {
         description: `Utilisation de la caméra ${isFrontCamera ? "frontale" : "arrière"}`,
       })
     } catch (error) {
-      console.error("Erreur d'accès à la caméra:", error)
+      console.error("❌ Erreur d'accès à la caméra:", error);
+      console.log("Type d'erreur:", error.name);
+      console.log("Message d'erreur:", error.message);
+      
+      let errorMessage = "Impossible d'accéder à la caméra";
+      if (error.message.includes("HTTPS")) {
+        errorMessage = "L'accès à la caméra nécessite une connexion HTTPS sécurisée";
+      } else if (error.message.includes("navigator")) {
+        errorMessage = "Votre navigateur ne supporte pas l'accès à la caméra";
+      }
+
       toast({
         title: "Erreur",
-        description: "Impossible d'accéder à la caméra. Essayez l'autre caméra.",
+        description: errorMessage,
         variant: "destructive",
       })
     }
@@ -87,6 +132,7 @@ export default function CameraPage() {
 
   const connectToPC = async (pcId: string) => {
     if (!streamRef.current) {
+      console.log("❌ Pas de flux vidéo disponible pour la connexion");
       toast({
         title: "Erreur",
         description: "Veuillez d'abord activer la caméra",
@@ -96,14 +142,21 @@ export default function CameraPage() {
     }
 
     try {
+      console.log("🔄 Démarrage de la connexion WebRTC...");
+      console.log("ID PC cible:", pcId);
+
       // Créer une nouvelle connexion RTCPeerConnection
       const configuration = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }] }
+      console.log("Configuration WebRTC:", JSON.stringify(configuration, null, 2));
+      
       const peerConnection = new RTCPeerConnection(configuration)
       peerConnectionRef.current = peerConnection
 
       // Ajouter tous les tracks du stream à la connexion peer
+      console.log("Ajout des tracks au peer connection");
       streamRef.current.getTracks().forEach((track) => {
         if (streamRef.current) {
+          console.log(`Ajout du track: ${track.kind} (${track.label})`);
           peerConnection.addTrack(track, streamRef.current)
         }
       })
@@ -111,22 +164,32 @@ export default function CameraPage() {
       // Configurer les gestionnaires d'événements ICE
       peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
-          // Dans une application réelle, vous enverriez ceci au serveur de signalisation
-          console.log("Nouveau candidat ICE:", event.candidate)
+          console.log("📡 Nouveau candidat ICE:", event.candidate.type);
           const candidates = JSON.parse(localStorage.getItem(`ice-candidates-${pcId}`) || "[]")
           candidates.push(event.candidate)
           localStorage.setItem(`ice-candidates-${pcId}`, JSON.stringify(candidates))
         }
       }
 
+      peerConnection.oniceconnectionstatechange = () => {
+        console.log("État de la connexion ICE:", peerConnection.iceConnectionState);
+      };
+
+      peerConnection.onconnectionstatechange = () => {
+        console.log("État de la connexion peer:", peerConnection.connectionState);
+      };
+
       // Vérifier s'il y a une offre du PC
+      console.log("🔍 Recherche d'une offre du PC...");
       const checkForOffer = () => {
         const offerString = localStorage.getItem(`offer-${pcId}`)
         if (offerString) {
+          console.log("✅ Offre trouvée!");
           const offer = JSON.parse(offerString)
           handleRemoteOffer(offer, pcId)
           localStorage.removeItem(`offer-${pcId}`)
         } else {
+          console.log("En attente de l'offre...");
           setTimeout(checkForOffer, 1000)
         }
       }
@@ -138,10 +201,11 @@ export default function CameraPage() {
         description: `Tentative de connexion au PC: ${pcId.substring(0, 6)}...`,
       })
     } catch (error) {
-      console.error("Erreur de connexion:", error)
+      console.error("❌ Erreur de connexion WebRTC:", error);
+      console.log("Message d'erreur:", error.message);
       toast({
         title: "Erreur",
-        description: "Impossible de se connecter au PC",
+        description: "Impossible de se connecter au PC: " + error.message,
         variant: "destructive",
       })
     }
@@ -289,4 +353,3 @@ export default function CameraPage() {
     </div>
   )
 }
-

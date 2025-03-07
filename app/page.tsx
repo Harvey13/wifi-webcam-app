@@ -1,8 +1,17 @@
+/**
+ * Home Page (Landing Page)
+ * 
+ * This is the main landing page of the WiFi Webcam application.
+ * It provides navigation buttons to either:
+ * 1. Camera Mode (for mobile devices)
+ * 2. Viewer Mode (for PC/desktop)
+ */
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Camera, Monitor } from "lucide-react"
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 p-4">
       <div className="max-w-md w-full space-y-8">
@@ -36,4 +45,3 @@ export default function Home() {
     </div>
   )
 }
-
