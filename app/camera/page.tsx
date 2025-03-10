@@ -18,7 +18,13 @@ import { useToast } from "@/components/ui/use-toast"
 import { Input } from "@/components/ui/input"
 import { useSearchParams } from "next/navigation"
 
+// Type pour les erreurs
+interface MediaError extends Error {
+  name: string;
+}
+
 export default function Camera() {
+  const [isFrontCamera, setIsFrontCamera] = useState(false)
   // État pour le flux vidéo et la connexion
   const [stream, setStream] = useState<MediaStream | null>(null)
   const [connected, setConnected] = useState(false)
@@ -84,9 +90,10 @@ export default function Camera() {
         throw new Error(`Erreur API ${response.status}: ${response.statusText}`)
       }
       return response
-    } catch (error) {
-      console.error("Erreur lors de l'appel API:", error)
-      throw error
+    } catch (error: unknown) {
+      const err = error as Error
+      console.error("Erreur lors de l'appel API:", err.message)
+      throw err
     }
   }
 
@@ -94,7 +101,7 @@ export default function Camera() {
   const startCamera = async () => {
     try {
       console.log("🎥 Démarrage de la caméra...")
-      console.log("Mode caméra:", "arrière")
+      console.log("Mode caméra:", isFrontCamera ? "frontale" : "arrière");
 
       // Vérification détaillée de l'environnement
       console.log("Vérification de l'environnement...")
@@ -113,10 +120,13 @@ export default function Camera() {
         throw new Error("Votre navigateur ne supporte pas l'accès à la caméra")
       }
 
-      // Configuration de la caméra
+      // Configuration de la caméra avec des contraintes plus précises
       const constraints: MediaStreamConstraints = {
         video: {
-          facingMode: "environment",
+          facingMode: isFrontCamera ? "user" : "environment",
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30 }
         },
       }
 
@@ -136,21 +146,27 @@ export default function Camera() {
         if (pcId) {
           console.log("ID PC détecté dans l'URL:", pcId)
           console.log("Stream disponible, configuration de WebRTC...")
-          setupWebRTC(pcId, mediaStream) // Passer directement le mediaStream
+          await new Promise(resolve => setTimeout(resolve, 500)) // Attendre que le stream soit stable
+          await setupWebRTC(pcId, mediaStream)
         }
       }
 
-    } catch (error) {
-      console.error("❌ Erreur d'accès à la caméra:", error)
-      console.error("Type d'erreur:", error.constructor.name)
-      console.error("Message d'erreur:", error.message)
+      toast({
+        title: "Caméra activée",
+        description: `Utilisation de la caméra ${isFrontCamera ? "frontale" : "arrière"}`,
+      })
+    } catch (error: unknown) {
+      const err = error as MediaError
+      console.error("❌ Erreur d'accès à la caméra:", err)
+      console.error("Type d'erreur:", err.constructor.name)
+      console.error("Message d'erreur:", err.message)
 
       let errorMessage = "Impossible d'accéder à la caméra"
-      if (error.message.includes("HTTPS")) {
+      if (err.message.includes("HTTPS")) {
         errorMessage = "L'accès à la caméra nécessite une connexion HTTPS sécurisée"
-      } else if (error.name === "NotAllowedError") {
+      } else if (err.name === "NotAllowedError") {
         errorMessage = "L'accès à la caméra a été refusé"
-      } else if (error.name === "NotFoundError") {
+      } else if (err.name === "NotFoundError") {
         errorMessage = "Aucune caméra n'a été trouvée"
       }
 
@@ -220,8 +236,9 @@ export default function Camera() {
               },
               body: JSON.stringify(event.candidate)
             })
-          } catch (error) {
-            console.error("Erreur lors de l'envoi du candidat ICE:", error)
+          } catch (error: unknown) {
+            const err = error as Error
+            console.error("Erreur lors de l'envoi du candidat ICE:", err.message)
           }
         }
       }
@@ -310,12 +327,14 @@ export default function Camera() {
               console.error("Erreur: Connexion peer non initialisée")
               setTimeout(checkForAnswer, 1000)
             }
-          } catch (error) {
-            console.error("Erreur lors de la définition de la description distante:", error)
+          } catch (error: unknown) {
+            const err = error as Error
+            console.error("Erreur lors de la définition de la description distante:", err.message)
             setTimeout(checkForAnswer, 1000)
           }
-        } catch (error) {
-          console.error("Erreur lors de la récupération de la réponse:", error)
+        } catch (error: unknown) {
+          const err = error as Error
+          console.error("Erreur lors de la récupération de la réponse:", err.message)
           setTimeout(checkForAnswer, 1000)
         }
       }
@@ -326,12 +345,12 @@ export default function Camera() {
         title: "Connexion en cours",
         description: `Tentative de connexion au PC: ${pcId.substring(0, 6)}...`,
       })
-    } catch (error) {
-      console.error("❌ Erreur de connexion WebRTC:", error)
-      console.log("Message d'erreur:", error.message)
+    } catch (error: unknown) {
+      const err = error as Error
+      console.error("❌ Erreur de connexion WebRTC:", err.message)
       toast({
         title: "Erreur",
-        description: "Impossible de se connecter au PC: " + error.message,
+        description: "Impossible de se connecter au PC: " + err.message,
         variant: "destructive",
       })
     }
@@ -346,6 +365,31 @@ export default function Camera() {
         description: "Veuillez entrer un ID de PC",
         variant: "destructive",
       })
+    }
+  }
+
+  const toggleCamera = async () => {
+    // 1. Arrêter la connexion WebRTC actuelle
+    if (peerConnectionRef.current) {
+      peerConnectionRef.current.close()
+      peerConnectionRef.current = null
+      setConnected(false)
+    }
+    
+    // 2. Arrêter tous les tracks actuels
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop())
+      setStream(null)
+    }
+    
+    // 3. Changer la caméra
+    setIsFrontCamera(!isFrontCamera)
+    
+    // 4. Redémarrer la caméra avec la nouvelle configuration
+    if (cameraStarted) {
+      // Petit délai pour s'assurer que tout est bien arrêté
+      await new Promise(resolve => setTimeout(resolve, 500))
+      await startCamera()
     }
   }
 
@@ -385,6 +429,16 @@ export default function Camera() {
             )}
 
             <div className="absolute bottom-4 right-4 flex gap-2">
+              {cameraStarted && (
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full bg-white/80 backdrop-blur-sm"
+                  onClick={toggleCamera}
+                >
+                  <RotateCw className="h-5 w-5" />
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -415,7 +469,7 @@ export default function Camera() {
 
       <div className="mt-8 text-center text-sm text-gray-500">
         <p>
-          Caméra arrière • ID: {pcId?.substring(0, 6)}
+          Caméra {isFrontCamera ? "frontale" : "arrière"} • ID: {pcId?.substring(0, 6)}
         </p>
       </div>
     </div>
