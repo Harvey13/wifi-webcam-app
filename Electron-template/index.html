@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'">
+    <title>Electron Config App - Debug Mode</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Configuration (Debug Mode)</h1>
+    <div id="configDisplay">
+        <h2>Current Config:</h2>
+        <pre id="configContent">Loading...</pre>
+    </div>
+
+    <div class="debug-info">
+        <h3>Debug Information:</h3>
+        <pre id="debugInfo">Loading debug info...</pre>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

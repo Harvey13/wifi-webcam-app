@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>WiFi Webcam - Mode Visualisation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        color: #333;
+        overflow: hidden;
+      }
+
+      .container {
+        max-width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        background-color: #2c3e50;
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .main-content {
+        display: flex;
+        flex: 1;
+        height: calc(100vh - 50px);
+      }
+
+      .stream-container {
+        flex: 1;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .info-panel {
+        width: 300px;
+        background-color: white;
+        padding: 20px;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+
+      .info-box {
+        background-color: #e8f4fd;
+        border-left: 4px solid #3498db;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+
+      .error-box {
+        background-color: #fde8e8;
+        border-left: 4px solid #e74c3c;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+
+      .success-box {
+        background-color: #e8fdf5;
+        border-left: 4px solid #2ecc71;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+
+      .qr-container {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .btn:hover {
+        background-color: #2980b9;
+      }
+
+      .btn:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+      }
+
+      .footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #7f8c8d;
+      }
+
+      #qrcode {
+        margin: 0 auto;
+        width: 200px;
+        height: 200px;
+      }
+
+      .url-display {
+        word-break: break-all;
+        font-family: monospace;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+
+      video {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      #videoElement {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      #placeholder {
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 80%;
+      }
+
+      #connection-status {
+        background-color: rgba(0, 0, 0, 0.3);
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>WiFi Webcam - Mode Visualisation</h1>
+        <div id="connection-status">En attente de connexion...</div>
+      </div>
+      
+      <div class="main-content">
+        <div class="stream-container">
+          <video id="videoElement" autoplay playsinline></video>
+          <div id="placeholder">En attente de la connexion à la caméra...</div>
+        </div>
+        
+        <div class="info-panel">
+          <div class="info-box">
+            <h3>Détection de l'adresse réseau</h3>
+            <p>Statut: <span id="detection-status">En cours...</span></p>
+            <div id="ip-info" style="display: none;">
+              <p>Adresse IP détectée: <strong id="ip-address">-</strong></p>
+              <p>URL de connexion:</p>
+              <div class="url-display" id="connection-url">-</div>
+            </div>
+          </div>
+          
+          <div class="error-box" id="error-box" style="display: none;">
+            <h3>Erreur</h3>
+            <p id="error-message"></p>
+          </div>
+          
+          <div class="success-box" id="success-box" style="display: none;">
+            <h3>Prêt à utiliser</h3>
+            <p>Scannez le QR code ci-dessous avec votre téléphone pour vous connecter à la webcam.</p>
+          </div>
+          
+          <div class="qr-container" id="qr-container" style="display: none;">
+            <div id="qrcode"></div>
+            <p>ou utilisez l'URL ci-dessus</p>
+          </div>
+          
+          <div>
+            <button id="refresh-ip" class="btn">Actualiser l'adresse IP</button>
+          </div>
+          
+          <div class="footer">
+            <p>Version de Chrome: <span id="chrome-version"></span></p>
+            <p>Version de Node: <span id="node-version"></span></p>
+            <p>Version d'Electron: <span id="electron-version"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="renderer.js"></script>
+  </body>
+</html>

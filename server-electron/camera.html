@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode Caméra - WiFi Webcam</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+        .video-element {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+        }
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #fff;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .button {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .info-box {
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 1rem;
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+        }
+        .info-box h2 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .info-box input {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid #90caf9;
+            border-radius: 4px;
+        }
+        .error-box {
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 1rem;
+            background-color: #ffebee;
+            border: 1px solid #ef9a9a;
+            border-radius: 4px;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align: center; margin-bottom: 2rem;">Mode Caméra</h1>
+        
+        <div id="errorContainer"></div>
+        
+        <div class="video-container">
+            <video id="videoElement" class="video-element" autoplay playsinline muted></video>
+            <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+                <div>
+                    <div class="loading-spinner"></div>
+                    <p>Démarrage de la caméra...</p>
+                </div>
+            </div>
+        </div>
+
+        <button id="startButton" class="button">Démarrer la caméra</button>
+        
+        <div id="connectionInfo" class="info-box" style="display: none;">
+            <h2>Informations de connexion</h2>
+            <p>Pour visualiser ce flux, ouvrez l'URL suivante sur un autre appareil :</p>
+            <input id="viewerUrl" type="text" readonly onclick="this.select()">
+            <p style="font-size: 0.875rem; color: #666;">
+                ID de connexion: <span id="connectionId"></span><br>
+                URL du serveur: <span id="serverUrl"></span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration WebRTC
+        const webrtcConfig = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' }
+            ]
+        };
+
+        // Éléments DOM
+        const videoElement = document.getElementById('videoElement');
+        const startButton = document.getElementById('startButton');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const connectionInfo = document.getElementById('connectionInfo');
+        const viewerUrl = document.getElementById('viewerUrl');
+        const connectionIdSpan = document.getElementById('connectionId');
+        const serverUrlSpan = document.getElementById('serverUrl');
+        const errorContainer = document.getElementById('errorContainer');
+
+        // Variables globales
+        let peerConnection = null;
+        let localStream = null;
+        let isLoading = false;
+
+        // Générer un ID de connexion aléatoire
+        function generateConnectionId() {
+            return Math.random().toString(36).substring(2, 14);
+        }
+
+        // Afficher une erreur
+        function showError(message) {
+            errorContainer.innerHTML = `
+                <div class="error-box">
+                    <strong>Erreur</strong><br>
+                    ${message}
+                </div>
+            `;
+        }
+
+        // Créer une connexion WebRTC
+        function createPeerConnection(id) {
+            const pc = new RTCPeerConnection(webrtcConfig);
+            
+            pc.onconnectionstatechange = () => {
+                console.log("📡 État de la connexion:", pc.connectionState);
+            };
+
+            // Gestion des candidats ICE locaux
+            pc.onicecandidate = async (event) => {
+                if (event.candidate) {
+                    try {
+                        await fetch(`/api/ice-candidates/${id}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(event.candidate)
+                        });
+                        console.log("✅ Candidat ICE envoyé!");
+                    } catch (err) {
+                        console.error("❌ Erreur lors de l'envoi du candidat ICE:", err);
+                    }
+                }
+            };
+            
+            return pc;
+        }
+
+        // Vérifier périodiquement les réponses
+        function checkForAnswer(pc, id) {
+            const checkAnswer = async () => {
+                try {
+                    const response = await fetch(`/api/answer/${id}`);
+                    
+                    if (response.ok) {
+                        const answer = await response.json();
+                        
+                        if (answer && !pc.currentRemoteDescription) {
+                            console.log("✅ Réponse reçue!");
+                            
+                            try {
+                                await pc.setRemoteDescription(new RTCSessionDescription(answer));
+                                console.log("✅ Description distante configurée!");
+                            } catch (err) {
+                                console.error("❌ Erreur configuration description distante:", err);
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error("❌ Erreur vérification réponse:", err);
+                }
+                
+                if (pc.connectionState !== "connected") {
+                    setTimeout(checkAnswer, 1000);
+                }
+            };
+            
+            checkAnswer();
+        }
+
+        // Vérifier périodiquement les candidats ICE
+        function checkForIceCandidates(pc, id) {
+            const checkCandidates = async () => {
+                try {
+                    const response = await fetch(`/api/ice-candidates/${id}`);
+                    
+                    if (response.ok) {
+                        const candidates = await response.json();
+                        
+                        if (Array.isArray(candidates)) {
+                            for (const candidate of candidates) {
+                                try {
+                                    if (candidate && !pc.remoteDescription) {
+                                        console.log("⏳ Candidat ICE en attente...");
+                                        continue;
+                                    }
+                                    
+                                    await pc.addIceCandidate(new RTCIceCandidate(candidate));
+                                    console.log("✅ Candidat ICE ajouté!");
+                                } catch (err) {
+                                    console.warn("⚠️ Erreur ajout candidat ICE:", err);
+                                }
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error("❌ Erreur vérification candidats ICE:", err);
+                }
+                
+                setTimeout(checkCandidates, 1000);
+            };
+            
+            checkCandidates();
+        }
+
+        // Démarrer la caméra et la connexion WebRTC
+        async function startCamera() {
+            try {
+                if (isLoading) return;
+                isLoading = true;
+                startButton.disabled = true;
+                loadingOverlay.style.display = 'flex';
+                errorContainer.innerHTML = '';
+
+                // Vérifier le support du navigateur
+                if (!navigator?.mediaDevices?.getUserMedia) {
+                    throw new Error("Votre navigateur ne supporte pas l'accès à la caméra");
+                }
+
+                // Vérifier le contexte sécurisé
+                if (window.isSecureContext === false) {
+                    throw new Error("L'accès à la caméra nécessite une connexion sécurisée");
+                }
+
+                // Générer un ID de connexion
+                const id = generateConnectionId();
+
+                // Accéder à la caméra
+                console.log("📸 Démarrage de la caméra...");
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 },
+                        frameRate: { ideal: 30 }
+                    }
+                });
+
+                // Afficher le flux vidéo
+                videoElement.srcObject = stream;
+                localStream = stream;
+
+                // Créer la connexion WebRTC
+                console.log("🔌 Création de la connexion WebRTC...");
+                const pc = createPeerConnection(id);
+                peerConnection = pc;
+
+                // Ajouter les pistes au peer connection
+                stream.getTracks().forEach(track => {
+                    pc.addTrack(track, stream);
+                });
+
+                // Créer et envoyer l'offre
+                console.log("📤 Création de l'offre WebRTC...");
+                const offer = await pc.createOffer();
+                await pc.setLocalDescription(offer);
+
+                // Attendre la collecte des candidats ICE
+                await new Promise(resolve => {
+                    if (pc.iceGatheringState === "complete") {
+                        resolve();
+                    } else {
+                        pc.onicegatheringstatechange = () => {
+                            if (pc.iceGatheringState === "complete") {
+                                resolve();
+                            }
+                        };
+                    }
+                });
+
+                // Envoyer l'offre
+                const response = await fetch(`/api/offer/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(pc.localDescription)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur lors de l'envoi de l'offre: ${response.status}`);
+                }
+
+                // Configurer la vérification des réponses et candidats ICE
+                checkForAnswer(pc, id);
+                checkForIceCandidates(pc, id);
+
+                // Afficher les informations de connexion
+                const serverUrl = window.location.origin;
+                connectionIdSpan.textContent = id;
+                serverUrlSpan.textContent = serverUrl;
+                viewerUrl.value = `${serverUrl}/camera?id=${id}`;
+                connectionInfo.style.display = 'block';
+
+            } catch (err) {
+                console.error("❌ Erreur:", err);
+                showError(err.message || "Erreur inconnue lors du démarrage de la caméra");
+                
+                if (localStream) {
+                    localStream.getTracks().forEach(track => track.stop());
+                }
+            } finally {
+                isLoading = false;
+                startButton.disabled = false;
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        // Gestionnaire d'événement pour le bouton de démarrage
+        startButton.addEventListener('click', startCamera);
+    </script>
+</body>
+</html>

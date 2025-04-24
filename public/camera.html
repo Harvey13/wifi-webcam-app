@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualisation Caméra WiFi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background: #111; color: #fff; margin: 0; }
+        .container { max-width: 500px; margin: 40px auto; background: #23272e; border-radius: 8px; padding: 24px; box-shadow: 0 2px 12px #000a; }
+        h1 { text-align: center; }
+        video { width: 100%; background: #000; border-radius: 8px; margin-bottom: 16px; }
+        #status { text-align: center; margin: 16px 0; font-size: 1.1em; }
+        #error { color: #e74c3c; text-align: center; display: none; }
+        .switch-icon { position: absolute; top: 8px; right: 8px; font-size: 24px; cursor: pointer; z-index: 10; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Caméra WiFi</h1>
+        <div id="status">Connexion aux caméras...</div>
+        <div id="error"></div>
+        <div style="position: relative;">
+            <video id="frontVideo" autoplay playsinline muted></video>
+            <video id="backVideo" autoplay playsinline muted style="display:none;"></video>
+            <div id="switchIcon" class="switch-icon" title="Changer de caméra">🔄</div>
+        </div>
+    </div>
+    <script>
+    // --- Capture des deux caméras et WebRTC ---
+    const status = document.getElementById('status');
+    const error = document.getElementById('error');
+    const frontVideo = document.getElementById('frontVideo');
+    const backVideo = document.getElementById('backVideo');
+    const switchIcon = document.getElementById('switchIcon');
+
+    let streamFront = null;
+    let streamBack = null;
+    let pc = null;
+    let currentCam = 'front';
+
+    async function startBothCameras() {
+        try {
+            streamFront = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+            streamBack = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+            frontVideo.srcObject = streamFront;
+            backVideo.srcObject = streamBack;
+            status.textContent = "";
+            frontVideo.style.display = 'block';
+            backVideo.style.display = 'none';
+        } catch (e) {
+            error.textContent = 'Erreur accès caméra : ' + e.message;
+            error.style.display = 'block';
+            status.textContent = '';
+        }
+    }
+
+    switchIcon.onclick = () => {
+        if (currentCam === 'front') {
+            currentCam = 'back';
+            frontVideo.style.display = 'none';
+            backVideo.style.display = 'block';
+            selectTrack('back');
+        } else {
+            currentCam = 'front';
+            frontVideo.style.display = 'block';
+            backVideo.style.display = 'none';
+            selectTrack('front');
+        }
+    };
+
+    // --- WebRTC : envoie les deux tracks, le PC pourra choisir ---
+    async function startWebRTC() {
+        pc = new RTCPeerConnection();
+        // Ajoute les deux tracks à la connexion
+        streamFront.getTracks().forEach(track => pc.addTrack(track, streamFront));
+        streamBack.getTracks().forEach(track => pc.addTrack(track, streamBack));
+        // TODO : signalisation WebRTC (offre/answer/ICE via API)
+        // ...
+    }
+
+    // Pour MVP : on diffuse toujours les deux, mais on peut signaler au PC lequel est "actif"
+    function selectTrack(cam) {
+        // À compléter : envoyer une info au PC pour switcher d'affichage
+        // (par exemple via WebSocket ou API REST, ou dans la signalisation WebRTC)
+    }
+
+    // Lance tout
+    startBothCameras().then(startWebRTC);
+    </script>
+</body>
+</html>
