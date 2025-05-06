@@ -195,7 +195,7 @@ class _StreamerPageState extends State<StreamerPage> {
 
   Widget _buildStreamView() => Column(
         children: [
-          Expanded(child: RTCVideoView(_localRenderer, mirror: true)),
+          Expanded(child: RTCVideoView(_localRenderer, mirror: false)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
