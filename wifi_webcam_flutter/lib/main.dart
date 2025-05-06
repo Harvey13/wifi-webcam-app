@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(const MyApp());
 
@@ -179,7 +180,20 @@ class _StreamerPageState extends State<StreamerPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('WiFi Webcam Streamer')),
+        appBar: AppBar(
+          title: const Text('WiFi Webcam Streamer'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.close),
+              tooltip: 'Fermer',
+              onPressed: () {
+                // Ferme l'application mobile
+                // Utilise SystemNavigator.pop() pour Android/iOS
+                SystemNavigator.pop();
+              },
+            ),
+          ],
+        ),
         body: scanned ? _buildStreamView() : _buildQRView(),
       );
 
