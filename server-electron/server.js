@@ -30,6 +30,7 @@ app.get('/api/status', (req, res) => {
 // Stocker une offre
 app.post('/api/offer/:id', (req, res) => {
   const { id } = req.params;
+  console.log(`[API] POST /api/offer/${id} | body:`, req.body);
   webrtcStore.setOffer(id, req.body);
   res.json({ success: true });
 });
@@ -38,9 +39,11 @@ app.post('/api/offer/:id', (req, res) => {
 app.get('/api/offer/:id', (req, res) => {
   const { id } = req.params;
   const offer = webrtcStore.getOffer(id);
+  console.log(`[API] GET /api/offer/${id} | found:`, !!offer);
   if (offer) {
     res.json(offer);
   } else {
+    console.log(`[API] GET /api/offer/${id} | 404 NOT FOUND`);
     res.status(404).json({ error: 'Offre non trouvée' });
   }
 });
@@ -48,6 +51,7 @@ app.get('/api/offer/:id', (req, res) => {
 // Stocker une réponse
 app.post('/api/answer/:id', (req, res) => {
   const { id } = req.params;
+  console.log(`[API] POST /api/answer/${id} | body:`, req.body);
   webrtcStore.setAnswer(id, req.body);
   res.json({ success: true });
 });
@@ -56,9 +60,11 @@ app.post('/api/answer/:id', (req, res) => {
 app.get('/api/answer/:id', (req, res) => {
   const { id } = req.params;
   const answer = webrtcStore.getAnswer(id);
+  console.log(`[API] GET /api/answer/${id} | found:`, !!answer);
   if (answer) {
     res.json(answer);
   } else {
+    console.log(`[API] GET /api/answer/${id} | 404 NOT FOUND`);
     res.status(404).json({ error: 'Réponse non trouvée' });
   }
 });
@@ -66,6 +72,7 @@ app.get('/api/answer/:id', (req, res) => {
 // Ajouter un candidat ICE
 app.post('/api/ice-candidates/:id', (req, res) => {
   const { id } = req.params;
+  console.log(`[API] POST /api/ice-candidates/${id} | body:`, req.body);
   webrtcStore.addIceCandidate(id, req.body);
   res.json({ success: true });
 });
@@ -74,6 +81,7 @@ app.post('/api/ice-candidates/:id', (req, res) => {
 app.get('/api/ice-candidates/:id', (req, res) => {
   const { id } = req.params;
   const candidates = webrtcStore.getIceCandidates(id);
+  console.log(`[API] GET /api/ice-candidates/${id} | count:`, candidates.length);
   webrtcStore.clearIceCandidates(id); // Nettoyer après lecture
   res.json(candidates);
 });

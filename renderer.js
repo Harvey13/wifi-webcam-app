@@ -137,8 +137,9 @@ async function startViewerWebRTC() {
 
     pc.ontrack = (event) => {
         if (event.track.kind === 'video') {
-            // Ajout automatique du flux vidéo reçu
+            console.log('[VIEWER] Track vidéo reçu, affichage du flux !');
             videoElement.srcObject = event.streams[0];
+            videoElement.play().catch(e => console.error('Erreur lecture vidéo:', e));
             placeholder.style.display = 'none';
         }
     };
@@ -150,13 +151,15 @@ async function startViewerWebRTC() {
         showError('Aucune offre WebRTC reçue. Assurez-vous que le mobile est connecté.');
         return;
     }
+    console.log('[VIEWER] Offre reçue pour peerId', peerId, ':', offer);
     await pc.setRemoteDescription(new RTCSessionDescription(offer));
 
     // Créer et envoyer la réponse
     const answer = await pc.createAnswer();
     await pc.setLocalDescription(answer);
+    let urlBase = detectedIp ? `http://${detectedIp}:3000` : '';
     try {
-        const response = await fetch(`/api/answer/${peerId}`, {
+        const response = await fetch(`${urlBase}/api/answer/${peerId}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(pc.localDescription)
@@ -165,6 +168,8 @@ async function startViewerWebRTC() {
         if (!response.ok) {
             const msg = await response.text();
             console.error('[VIEWER] POST ANSWER failed:', msg);
+        } else {
+            console.log('[VIEWER] Réponse WebRTC envoyée avec succès pour peerId', peerId);
         }
     } catch (e) {
         console.error('[VIEWER] POST ANSWER error:', e);
@@ -173,11 +178,15 @@ async function startViewerWebRTC() {
     // Gestion des ICE candidates
     pc.onicecandidate = (event) => {
         if (event.candidate) {
-            fetch(`/api/ice-candidates/${peerId}`, {
+            let urlBase = detectedIp ? `http://${detectedIp}:3000` : '';
+            console.log('[VIEWER] ICE candidate local généré, envoi au serveur:', event.candidate);
+            fetch(`${urlBase}/api/ice-candidates/${peerId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(event.candidate)
             });
+        } else {
+            console.log('[VIEWER] Fin de génération des ICE candidates locaux.');
         }
     };
     pollRemoteIceCandidates();
@@ -192,19 +201,28 @@ function showError(msg) {
 
 // --- Signalisation REST ---
 async function pollForOffer(id) {
-    for (let i = 0; i < 60; i++) {
-        let urlBase = detectedIp ? `http://${detectedIp}:3000` : '';
+    let urlBase;
+    let tries = 0;
+    while (true) {
+        urlBase = detectedIp ? `http://${detectedIp}:3000` : '';
         if (!urlBase) {
             await new Promise(r => setTimeout(r, 1000));
             continue;
         }
         try {
             const res = await fetch(`${urlBase}/api/offer/${id}`);
-            if (res.ok) return await res.json();
-        } catch (e) {}
+            console.log(`[VIEWER] Tentative GET /api/offer/${id} | status:`, res.status);
+            if (res.ok) {
+                const data = await res.json();
+                console.log(`[VIEWER] Offre trouvée pour peerId ${id}:`, data);
+                return data;
+            }
+        } catch (e) {
+            console.error(`[VIEWER] Erreur lors du GET /api/offer/${id}:`, e);
+        }
+        tries++;
         await new Promise(r => setTimeout(r, 1000));
     }
-    return null;
 }
 
 async function pollRemoteIceCandidates() {
@@ -218,11 +236,19 @@ async function pollRemoteIceCandidates() {
             const res = await fetch(`${urlBase}/api/ice-candidates/${peerId}`);
             if (res.ok) {
                 const candidates = await res.json();
+                console.log(`[VIEWER] ICE candidates distants reçus (${candidates.length}):`, candidates);
                 for (const c of candidates) {
-                    try { await pc.addIceCandidate(new RTCIceCandidate(c)); } catch {}
+                    try {
+                        await pc.addIceCandidate(new RTCIceCandidate(c));
+                        console.log('[VIEWER] ICE candidate distant ajouté:', c);
+                    } catch (err) {
+                        console.error('[VIEWER] Erreur ajout ICE candidate distant:', err, c);
+                    }
                 }
             }
-        } catch (e) {}
+        } catch (e) {
+            console.error('[VIEWER] Erreur lors de la récupération des ICE distants:', e);
+        }
         await new Promise(r => setTimeout(r, 1000));
     }
 }

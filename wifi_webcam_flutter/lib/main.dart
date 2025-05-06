@@ -4,6 +4,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 
 void main() => runApp(const MyApp());
 
@@ -63,7 +64,9 @@ class _StreamerPageState extends State<StreamerPage> {
           final uri = Uri.tryParse(targetUrl ?? '');
           _peerId = uri?.queryParameters['peerId'] ?? DateTime.now().millisecondsSinceEpoch.toString();
           _serverRoot = uri != null ? '${uri.scheme}://${uri.host}:${uri.port}' : null;
-          print('[MOBILE] Utilisation du peerId: $_peerId');
+          print('[MOBILE][QR] QR scanné: $targetUrl');
+          print('[MOBILE][QR] peerId extrait: $_peerId');
+          print('[MOBILE][QR] serverRoot extrait: $_serverRoot');
         });
         controller.pauseCamera();
         _startWebRTC();
@@ -76,6 +79,7 @@ class _StreamerPageState extends State<StreamerPage> {
       'audio': false,
       'video': {'facingMode': 'environment'}
     };
+    print('[MOBILE][WEBRTC] Obtention du flux média local...');
     _localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     _localRenderer.srcObject = _localStream;
     final config = {
@@ -83,61 +87,94 @@ class _StreamerPageState extends State<StreamerPage> {
         {'urls': 'stun:stun.l.google.com:19302'}
       ]
     };
+    print('[MOBILE][WEBRTC] Création de la connexion peer...');
     _peer = await createPeerConnection(config);
     _localStream?.getTracks().forEach((track) {
       _peer?.addTrack(track, _localStream!);
     });
     final offer = await _peer!.createOffer();
     await _peer!.setLocalDescription(offer);
-    // Log avant POST de l'offre
-    print('[MOBILE] POST OFFER: [36m$_serverRoot/api/offer/$_peerId[0m');
-	
-	try {
-	  final resp = await http.post(
-		Uri.parse('$_serverRoot/api/offer/${_peerId}'),
-		headers: {'Content-Type': 'application/json'},
-		body: json.encode(offer.toMap()),
-	  );
-	  print('[MOBILE] POST OFFER status: ${resp.statusCode}, body: ${resp.body}');
-	} catch (e) {
-	  print('[MOBILE] POST OFFER error: $e');
-	}
-		
+    print('[MOBILE][WEBRTC] Offre créée. peerId: [33m[1m[4m$_peerId[0m');
+    print('[MOBILE][WEBRTC] Contenu de l\'offre: [36m${json.encode(offer.toMap())}[0m');
+    if (_serverRoot == null || _peerId == null) {
+      print('[MOBILE][WEBRTC][ERREUR] serverRoot ou peerId est null. Impossible d\'envoyer l\'offre.');
+      return;
+    }
+    final offerUrl = '$_serverRoot/api/offer/${_peerId}';
+    print('[MOBILE][WEBRTC] POST OFFER: $offerUrl');
+    try {
+      final resp = await http.post(
+        Uri.parse(offerUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(offer.toMap()),
+      );
+      print('[MOBILE][WEBRTC] POST OFFER status: ${resp.statusCode}, body: ${resp.body}');
+      if (resp.statusCode != 200) {
+        print('[MOBILE][WEBRTC][ERREUR] POST OFFER a échoué avec status ${resp.statusCode}: ${resp.body}');
+      }
+    } catch (e, st) {
+      print('[MOBILE][WEBRTC][ERREUR] Exception lors du POST OFFER: $e\n$st');
+    }
     _peer!.onIceCandidate = (RTCIceCandidate? cand) {
       if (cand != null) {
-        print('[MOBILE] POST ICE: [36m$_serverRoot/api/ice-candidates/$_peerId[0m');
+        print('[MOBILE][WEBRTC] POST ICE: $_serverRoot/api/ice-candidates/$_peerId');
         http.post(Uri.parse('$_serverRoot/api/ice-candidates/${_peerId}'),
             headers: {'Content-Type': 'application/json'},
             body: json.encode({
               'candidate': cand.candidate,
               'sdpMid': cand.sdpMid,
               'sdpMLineIndex': cand.sdpMLineIndex,
-            }));
+            })).then((resp) {
+          print('[MOBILE][WEBRTC] POST ICE status: ${resp.statusCode}, body: ${resp.body}');
+        }).catchError((e) {
+          print('[MOBILE][WEBRTC] POST ICE error: $e');
+        });
       }
     };
     _answerTimer = Timer.periodic(const Duration(seconds: 1), (t) async {
-      print('[MOBILE] GET ANSWER: [36m$_serverRoot/api/answer/$_peerId[0m');
-      final res = await http.get(Uri.parse('$_serverRoot/api/answer/${_peerId}'));
-      if (res.statusCode == 200) {
-        final ans = json.decode(res.body);
-        await _peer!.setRemoteDescription(
-            RTCSessionDescription(ans['sdp'], ans['type']));
-        t.cancel();
+      print('[MOBILE][WEBRTC] GET ANSWER: $_serverRoot/api/answer/$_peerId');
+      try {
+        final res = await http.get(Uri.parse('$_serverRoot/api/answer/${_peerId}'));
+        print('[MOBILE][WEBRTC] GET ANSWER status: ${res.statusCode}, body: ${res.body}');
+        if (res.statusCode == 200) {
+          final ans = json.decode(res.body);
+          await _peer!.setRemoteDescription(
+              RTCSessionDescription(ans['sdp'], ans['type']));
+          print('[MOBILE][WEBRTC] Réponse reçue et appliquée.');
+          t.cancel();
+        }
+      } catch (e) {
+        print('[MOBILE][WEBRTC] GET ANSWER error: $e');
       }
     });
     _iceTimer = Timer.periodic(const Duration(seconds: 1), (t) async {
-      print('[MOBILE] GET ICE: [36m$_serverRoot/api/ice-candidates/$_peerId[0m');
-      final r = await http
-          .get(Uri.parse('$_serverRoot/api/ice-candidates/${_peerId}'));
-      if (r.statusCode == 200) {
-        final List list = json.decode(r.body);
-        for (var c in list) {
-          await _peer!.addCandidate(RTCIceCandidate(
-              c['candidate'], c['sdpMid'], c['sdpMLineIndex']));
+      print('[MOBILE][WEBRTC] GET ICE: $_serverRoot/api/ice-candidates/$_peerId');
+      try {
+        final r = await http.get(Uri.parse('$_serverRoot/api/ice-candidates/${_peerId}'));
+        print('[MOBILE][WEBRTC] GET ICE status: ${r.statusCode}, body: ${r.body}');
+        if (r.statusCode == 200) {
+          final List list = json.decode(r.body);
+          for (var c in list) {
+            await _peer!.addCandidate(RTCIceCandidate(
+                c['candidate'], c['sdpMid'], c['sdpMLineIndex']));
+          }
         }
+      } catch (e) {
+        print('[MOBILE][WEBRTC] GET ICE error: $e');
       }
     });
     setState(() {});
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (qrController != null) {
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        qrController!.pauseCamera();
+      }
+      qrController!.resumeCamera();
+    }
   }
 
   @override
