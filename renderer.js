@@ -226,6 +226,8 @@ async function pollForOffer(id) {
 }
 
 async function pollRemoteIceCandidates() {
+    let receivedCount = 0;
+    let emptyTries = 0;
     while (true) {
         let urlBase = detectedIp ? `http://${detectedIp}:3000` : '';
         if (!urlBase) {
@@ -237,13 +239,24 @@ async function pollRemoteIceCandidates() {
             if (res.ok) {
                 const candidates = await res.json();
                 console.log(`[VIEWER] ICE candidates distants reçus (${candidates.length}):`, candidates);
-                for (const c of candidates) {
-                    try {
-                        await pc.addIceCandidate(new RTCIceCandidate(c));
-                        console.log('[VIEWER] ICE candidate distant ajouté:', c);
-                    } catch (err) {
-                        console.error('[VIEWER] Erreur ajout ICE candidate distant:', err, c);
+                if (candidates.length > 0) {
+                    for (const c of candidates) {
+                        try {
+                            await pc.addIceCandidate(new RTCIceCandidate(c));
+                            console.log('[VIEWER] ICE candidate distant ajouté:', c);
+                        } catch (err) {
+                            console.error('[VIEWER] Erreur ajout ICE candidate distant:', err, c);
+                        }
                     }
+                    receivedCount += candidates.length;
+                    emptyTries = 0;
+                } else {
+                    emptyTries++;
+                }
+                // Arrête le polling si on a reçu des candidats et qu'on a eu 5 tours à vide
+                if (receivedCount > 0 && emptyTries >= 5) {
+                    console.log('[VIEWER] Arrêt du polling ICE: tous les candidats reçus.');
+                    break;
                 }
             }
         } catch (e) {

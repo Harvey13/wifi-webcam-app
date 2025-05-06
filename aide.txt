@@ -1,5 +1,17 @@
+cd C:\Users\boby_\Projet\wifi-webcam
 npm run dev
 
 cd wifi_webcam_flutter
 flutter pub get
 flutter run -d 2201116PG
+
+# Ouvre les ports UDP nécessaires à WebRTC (3478-65535)
+New-NetFirewallRule `
+    -DisplayName "WebRTC UDP Ports" `
+    -Direction Inbound `
+    -Action Allow `
+    -Protocol UDP `
+    -LocalPort 3478-65535 `
+    -Profile Any
+	
+Remove-NetFirewallRule -DisplayName "WebRTC UDP Ports"

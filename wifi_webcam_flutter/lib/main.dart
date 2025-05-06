@@ -90,6 +90,29 @@ class _StreamerPageState extends State<StreamerPage> {
     };
     print('[MOBILE][WEBRTC] Création de la connexion peer...');
     _peer = await createPeerConnection(config);
+    _peer?.onIceCandidate = (RTCIceCandidate candidate) async {
+      print('[MOBILE][WEBRTC] ICE candidate généré: ${candidate.candidate}');
+      if (_serverRoot != null && _peerId != null) {
+        final url = '${_serverRoot}/api/ice-candidates/${_peerId}';
+        try {
+          final resp = await http.post(
+            Uri.parse(url),
+            headers: {'Content-Type': 'application/json'},
+            body: json.encode({
+              'candidate': candidate.candidate,
+              'sdpMid': candidate.sdpMid,
+              'sdpMLineIndex': candidate.sdpMLineIndex,
+            }),
+          );
+          print('[MOBILE][WEBRTC] POST ICE status: ${resp.statusCode}, body: ${resp.body}');
+          if (resp.statusCode != 200) {
+            print('[MOBILE][WEBRTC][ERREUR] POST ICE a échoué avec status ${resp.statusCode}: ${resp.body}');
+          }
+        } catch (e) {
+          print('[MOBILE][WEBRTC][ERREUR] POST ICE: ${e}');
+        }
+      }
+    };
     _localStream?.getTracks().forEach((track) {
       _peer?.addTrack(track, _localStream!);
     });
