@@ -12,6 +12,7 @@ export default function ViewerPage() {
   const [peerId, setPeerId] = useState("")
   const [isConnected, setIsConnected] = useState(false)
   const [isConnecting, setIsConnecting] = useState(false)
+  const [remoteIp, setRemoteIp] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const peerConnectionRef = useRef<RTCPeerConnection | null>(null)
   const { toast } = useToast()
@@ -41,16 +42,50 @@ export default function ViewerPage() {
 
       // Set up event handlers
       peerConnection.ontrack = (event) => {
-        console.log("Track reçu:", event.track.kind)
+        console.log("[DEBUG] ontrack appelé", event)
         if (videoRef.current && event.streams[0]) {
+          console.log("[DEBUG] Ajout du flux vidéo au DOM", event.streams[0])
           videoRef.current.srcObject = event.streams[0]
           setIsConnected(true)
           setIsConnecting(false)
+          console.log("[DEBUG] setIsConnected(true) appelé")
+
+          // Tentative de récupération de l'IP du téléphone via le flux (si possible)
+          if (event.receiver) {
+            console.log("[DEBUG] event.receiver présent", event.receiver)
+            if (event.receiver.transport) {
+              console.log("[DEBUG] event.receiver.transport présent", event.receiver.transport)
+              if (event.receiver.transport.iceTransport) {
+                console.log("[DEBUG] event.receiver.transport.iceTransport présent", event.receiver.transport.iceTransport)
+                const iceTransport = event.receiver.transport.iceTransport;
+                if (iceTransport.getSelectedCandidatePair) {
+                  const pair = iceTransport.getSelectedCandidatePair();
+                  console.log("[DEBUG] getSelectedCandidatePair()", pair)
+                  if (pair && pair.remote && pair.remote.address) {
+                    setRemoteIp(pair.remote.address);
+                  }
+                }
+              }
+            }
+          }
+          // Fallback: essayer via les stats (plus compatible)
+          if (peerConnectionRef.current && peerConnectionRef.current.getStats) {
+            peerConnectionRef.current.getStats().then(stats => {
+              stats.forEach(report => {
+                if (report.type === 'remote-candidate' && report.address) {
+                  setRemoteIp(report.address);
+                }
+              });
+              console.log("[DEBUG] Stats WebRTC collectées", stats)
+            });
+          }
 
           toast({
             title: "Connexion établie",
             description: "La caméra est maintenant connectée",
           })
+        } else {
+          console.log("[DEBUG] videoRef.current ou event.streams[0] absent", { videoRef: videoRef.current, streams: event.streams })
         }
       }
 
@@ -221,7 +256,14 @@ export default function ViewerPage() {
       </div>
 
       <div className="mt-8 text-center text-sm text-gray-500">
-        <p>{isConnected ? `Connecté à la caméra: ${peerId.substring(0, 6)}` : "En attente de connexion"}</p>
+        <p>
+          {isConnected
+            ? remoteIp && remoteIp !== ''
+              ? `Connecté à la caméra (${remoteIp})`
+              : `Connecté à la caméra`
+            : "En attente de connexion..."}
+        </p>
+        <div style={{fontSize: '0.9em', color: '#888'}}>DEBUG: isConnected={String(isConnected)} | remoteIp={remoteIp ?? 'null'}</div>
       </div>
     </div>
   )

@@ -1,246 +1,74 @@
-E/FrameEvents(10201): updateAcquireFence: Did not find frame.
-E/FrameEvents(10201): updateAcquireFence: Did not find frame.
-E/FrameEvents(10201): updateAcquireFence: Did not find frame.
-E/FrameEvents(10201): updateAcquireFence: Did not find frame.
-D/DecoderThread(10201): Found barcode in 36 ms
-I/flutter (10201): [MOBILE][QR] QR scanné: http://192.168.1.147:3000/camera?peerId=2469014285900415
-I/flutter (10201): [MOBILE][QR] peerId extrait: 2469014285900415
-I/flutter (10201): [MOBILE][QR] serverRoot extrait: http://192.168.1.147:3000
-I/flutter (10201): [MOBILE][WEBRTC] Obtention du flux média local...
-D/CameraPreview(10201): pause()
-D/CameraInstance(10201): Closing camera
-D/CameraPreview(10201): pause()
-I/FlutterWebRTCPlugin(10201): getUserMedia(video): ConstraintsMap{mMap={facingMode=environment}}
-I/CameraManagerGlobal(10201): Connecting to camera service
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): [soar.cts] ignore the status update of camera: 2
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): [soar.cts] ignore the status update of camera: 3
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): [soar.cts] ignore the status update of camera: 4
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): [soar.cts] ignore the status update of camera: 5
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): [soar.cts] ignore the status update of camera: 6
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 2
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 3
-D/FlutterWebRTCPlugin(10201): Creating video capturer using Camera2 API.
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-D/FlutterWebRTCPlugin(10201): Create back camera 0 succeeded
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 4
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 5
-I/org.webrtc.Logging(10201): EglBase14Impl: Using OpenGL ES version 2
-I/org.webrtc.Logging(10201): Camera2Enumerator: Get supported formats for camera index 0.
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 3840x2160@24000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 3264x2448@24000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 3200x2400@24000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 4000x1800@24000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 3264x1836@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 3264x1468@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2448x2448@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2592x1944@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2592x1940@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2592x1464@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2688x1512@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2304x1728@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 2048x1536@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1920x864@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1600x900@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1600x720@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1200x1200@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1920x1440@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1920x1080@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1600x1200@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1440x1080@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1280x960@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1280x720@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 1080x1080@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 800x600@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 800x480@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 720x480@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 640x480@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 640x400@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 352x288@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 320x240@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 240x320@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Format: 176x144@30000
-I/org.webrtc.Logging(10201): Camera2Enumerator: Get supported formats for camera index 0 done. Time spent: 14 ms.
-I/org.webrtc.Logging(10201): CameraCapturer: startCapture: 1280x720@30
-D/FlutterWebRTCPlugin(10201): CameraEventsHandler.waitForCameraOpen
-I/org.webrtc.Logging(10201): Camera2Session: Create new camera2 session on camera 0
-I/org.webrtc.Logging(10201): Camera2Session: start
-I/org.webrtc.Logging(10201): Camera2Session: Available preview sizes: [3840x2160, 3264x2448, 3200x2400, 4000x1800, 3264x1836, 3264x1468, 2448x2448, 2592x1944, 2592x1940, 2592x1464, 2688x1512, 2304x1728, 2048x1536, 1920x864, 1600x900, 1600x720, 1200x1200, 1920x1440, 1920x1080, 1600x1200, 1440x1080, 1280x960, 1280x720, 1080x1080, 800x600, 800x480, 720x480, 640x480, 640x400, 352x288, 320x240, 240x320, 176x144]
-I/org.webrtc.Logging(10201): Camera2Session: Available fps ranges: [[5.0:5.0], [15.0:15.0], [15.0:24.0], [24.0:24.0], [12.0:30.0], [30.0:30.0]]
-I/org.webrtc.Logging(10201): Camera2Session: Using capture format: 1280x720@[12.0:30.0]
-I/org.webrtc.Logging(10201): Camera2Session: Opening camera 0
-D/FlutterWebRTCPlugin(10201): CameraEventsHandler.onCameraOpening: cameraName=0
-W/libc    (10201): Access denied finding property "persist.vendor.camera.privapp.list"
-D/CameraExtImplXiaoMi(10201): initCameraDevice: 0
-I/CameraManager(10201): Open camera top activityName is com.example.wifi_webcam_flutter.MainActivity
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 2
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 3
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 4
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 5
-E/CameraManagerGlobal(10201): Camera 4 is not available. Ignore physical camera status change
-E/CameraManagerGlobal(10201): Camera 4 is not available. Ignore physical camera status change
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 2
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 3
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 4
-D/CameraInjector(10201): updateCloudCameraControllerInfoAsync: has aleardy start update task.
-D/CameraInjector(10201): waitForResult:
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelist"
-W/libc    (10201): Access denied finding property "vendor.camera.aux.packagelistext"
-W/CameraManagerGlobal(10201): ignore the torch status update of camera: 5
-W/BpBinder(10201): PerfMonitor binderTransact :  time=229ms interface=android.hardware.ICameraService code=4
-I/org.webrtc.Logging(10201): Camera2Session: Camera opened.
-D/CameraDevice-JV-0(10201): waitUntilIdle: E. id = 0
-D/CameraDevice-JV-0(10201): waitUntilIdle: X
-I/org.webrtc.Logging(10201): Camera2Session: Camera capture session configured.
-I/org.webrtc.Logging(10201): Camera2Session: Using video stabilization.
-I/org.webrtc.Logging(10201): Camera2Session: Using continuous video auto-focus.
-I/org.webrtc.Logging(10201): Camera2Session: Camera device successfully started.
-I/org.webrtc.Logging(10201): CameraCapturer: Create session done. Switch state: IDLE
-I/org.webrtc.Logging(10201): SurfaceTextureHelper: Setting listener to org.webrtc.Camera2Session$CaptureSessionCallback$$ExternalSyntheticLambda0@be5fc2c
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-D/FlutterWebRTCPlugin(10201): CameraEventsHandler.onFirstFrameAvailable
-D/FlutterWebRTCPlugin(10201): Target: 1280x720@30, Actual: 1280x720@30
-D/FlutterWebRTCPlugin(10201): MediaStream id: 158235b4-e9ff-4283-af89-04744d3dc596
-I/flutter (10201): [MOBILE][WEBRTC] Création de la connexion peer...
-W/FlutterWebRTCPlugin(10201): FlutterRTCVideoRenderer.setVideoTrack, set video track to 20d540d6-a2b2-4141-8694-79353a9a6c5d
-I/org.webrtc.Logging(10201): EglRenderer: Releasing.
-I/org.webrtc.Logging(10201): EglRenderer: eglBase detach and release.
-I/org.webrtc.Logging(10201): EglRenderer: Releasing done.
-I/org.webrtc.Logging(10201): EglBase14Impl: Using OpenGL ES version 2
-I/org.webrtc.Logging(10201): EglRenderer: Initializing EglRenderer
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/org.webrtc.Logging(10201): NetworkMonitor: Start monitoring with native observer -5476376619920536704 fieldTrialsString:
-W/org.webrtc.Logging(10201): NetworkMonitorAutoDetect: Unable to obtain permission to request a cellular network.
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/org.webrtc.Logging(10201): NetworkMonitorAutoDetect: Network handle: 875284058125 becomes available: 203
-D/FlutterWebRTCPlugin(10201): onIceGatheringChangeGATHERING
-I/flutter (10201): [MOBILE][WEBRTC] Offre créée. peerId: 2469014285900415
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-I/org.webrtc.Logging(10201): NetworkMonitorAutoDetect: handle: 875284058125 capabilities changed: [ Transports: CELLULAR Capabilities: MMS&SUPL&DUN&XCAP&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED&NOT_VCN_MANAGED LinkUpBandwidth>=26800Kbps LinkDnBandwidth>=26800Kbps Specifier: <TelephonyNetworkSpecifier [mSubId = 6]> SubscriptionIds: {6} UnderlyingNetworks: Null]
-I/flutter (10201): [MOBILE][WEBRTC] Contenu de l'offre: {"sdp":"v=0\r\no=- 8449126281620160497 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0 1\r\na=extmap-allow-mixed\r\na=msid-semantic: WMS 158235b4-e9ff-4283-af89-04744d3dc596\r\nm=video 9 UDP/TLS/RTP/SAVPF 127 103 104 105 96 97 39 40 98 99 106 107 108\r\nc=IN IP4 0.0.0.0\r\na=rtcp:9 IN IP4 0.0.0.0\r\na=ice-ufrag:PptF\r\na=ice-pwd:eFlqVoQBR5Okesjjo6saSCKU\r\na=ice-options:trickle renomination\r\na=fingerprint:sha-256 C2:72:AD:2C:DB:D6:C8:3B:2A:58:77:29:ED:37:0A:15:95:3D:2B:9B:FA:39:3C:B2:9B:9D:AA:F1:4B:F1:D4:62\r\na=setup:actpass\r\na=mid:0\r\na=extmap:1 urn:ietf:params:rtp-hdrext:toffset\r\na=extmap:2 http://www.webrtc.org/experiments/rtp-hdrext/abs-send-time\r\na=extmap:3 urn:3gpp:video-orientation\r\na=extmap:4 http://www.ietf.org/id/draft-holmer-rmcat-transport-wide-cc-extensions-01\r\na=extmap:5 http://www.webrtc.org/experiments/rtp-hdrext/playout-delay\r\na=extmap:6 http://www.webrtc.org/experiments/rtp-hdrext/video-content-type\r\na=extmap:7 http://www.we
-I/flutter (10201): [MOBILE][WEBRTC] POST OFFER: http://192.168.1.147:3000/api/offer/2469014285900415
-I/org.webrtc.Logging(10201): NetworkMonitorAutoDetect: handle: 875284058125 link properties changed
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-D/FlutterWebRTCPlugin(10201): onIceCandidate
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:2011293178 1 udp 2122129151 100.97.12.247 41273 typ host generation 0 ufrag PptF network-id 3 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:2934693025 1 udp 2121998079 127.0.0.1 40955 typ host generation 0 ufrag PptF network-id 1
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1062976143 1 udp 2122262783 2a02:8440:d123:d430:e4f2:ddff:fe73:ec0e 47678 typ host generation 0 ufrag PptF network-id 4 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:3217542697 1 udp 2122071295 ::1 44875 typ host generation 0 ufrag PptF network-id 2
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:2011293178 1 udp 2122129151 100.97.12.247 41921 typ host generation 0 ufrag PptF network-id 3 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:2934693025 1 udp 2121998079 127.0.0.1 44691 typ host generation 0 ufrag PptF network-id 1
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1062976143 1 udp 2122262783 2a02:8440:d123:d430:e4f2:ddff:fe73:ec0e 37715 typ host generation 0 ufrag PptF network-id 4 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:3217542697 1 udp 2122071295 ::1 42728 typ host generation 0 ufrag PptF network-id 2
-I/_webcam_flutter(10201): createIfNeeded: Recreate new EGLImage since dataspace changed
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1959339740 1 udp 1686055167 2a02:8440:d123:d430:e4f2:ddff:fe73:ec0e 47678 typ srflx raddr 2a02:8440:d123:d430:e4f2:ddff:fe73:ec0e rport 47678 generation 0 ufrag PptF network-id 4 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1343199110 1 udp 1685921535 92.88.170.100 41921 typ srflx raddr 100.97.12.247 rport 41921 generation 0 ufrag PptF network-id 3 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1343199110 1 udp 1685921535 92.88.170.100 41273 typ srflx raddr 100.97.12.247 rport 41273 generation 0 ufrag PptF network-id 3 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1959339740 1 udp 1686055167 2a02:8440:d123:d430:e4f2:ddff:fe73:ec0e 37715 typ srflx raddr 2a02:8440:d123:d430:e4f2:ddff:fe73:ec0e rport 37715 generation 0 ufrag PptF network-id 4 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1346439221 1 tcp 1518018303 127.0.0.1 37687 typ host tcptype passive generation 0 ufrag PptF network-id 1
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:2287895027 1 tcp 1518217471 2a02:8468:2019:cec1:6422:f8ff:fe9e:388b 9 typ host tcptype active generation 0 ufrag PptF network-id 5 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1097669309 1 tcp 1518091519 ::1 42729 typ host tcptype passive generation 0 ufrag PptF network-id 2
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1346439221 1 tcp 1518018303 127.0.0.1 46733 typ host tcptype passive generation 0 ufrag PptF network-id 1
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:2287895027 1 tcp 1518217471 2a02:8468:2019:cec1:6422:f8ff:fe9e:388b 9 typ host tcptype active generation 0 ufrag PptF network-id 5 network-cost 900
-I/flutter (10201): [MOBILE][WEBRTC] ICE candidate généré: candidate:1097669309 1 tcp 1518091519 ::1 37827 typ host tcptype passive generation 0 ufrag PptF network-id 2
-I/org.webrtc.Logging(10201): CameraStatistics: Camera fps: 16.
-I/org.webrtc.Logging(10201): CameraStatistics: Camera fps: 14.
-I/org.webrtc.Logging(10201): EglRenderer: Duration: 4002 ms. Frames received: 66. Dropped: 0. Rendered: 66. Render fps: 16,5. Average render time: 1246 us. Average swapBuffer time: 1307 us.
-I/org.webrtc.Logging(10201): CameraStatistics: Camera fps: 15.
-I/org.webrtc.Logging(10201): CameraStatistics: Camera fps: 17.
-I/org.webrtc.Logging(10201): EglRenderer: Duration: 4004 ms. Frames received: 62. Dropped: 0. Rendered: 62. Render fps: 15,5. Average render time: 1182 us. Average swapBuffer time: 1537 us.
-I/org.webrtc.Logging(10201): CameraStatistics: Camera fps: 15.
-I/org.webrtc.Logging(10201): CameraStatistics: Camera fps: 15.
+renderer.js:301 Document chargé, démarrage de l'application...
+renderer.js:21 Initialisation de l'application...
+renderer.js:177 [VIEWER] Utilisation du peerId: 1821340090263543
+VM4 sandbox_bundle:2 Electron Security Warning (Insecure Content-Security-Policy) This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+warnAboutInsecureCSP @ VM4 sandbox_bundle:2
+192.168.1.147:3000/api/offer/1821340090263543:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
+192.168.1.147:3000/api/offer/1821340090263543:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
+192.168.1.147:3000/api/offer/1821340090263543:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
+192.168.1.147:3000/api/offer/1821340090263543:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
+192.168.1.147:3000/api/offer/1821340090263543:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
+renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 200
+renderer.js:246 [VIEWER] Offre trouvée pour peerId 1821340090263543: Object
+renderer.js:183 [VIEWER] Offre reçue pour peerId 1821340090263543 : Object
+renderer.js:140 [VIEWER] Track vidéo reçu, affichage du flux !
+renderer.js:196 [VIEWER] POST ANSWER status: 200
+renderer.js:201 [VIEWER] Réponse WebRTC envoyée avec succès pour peerId 1821340090263543
+renderer.js:270 [VIEWER] ICE candidates distants reçus (18): Array(18)
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:211 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
+renderer.js:211 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
+renderer.js:211 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:218 [VIEWER] Fin de génération des ICE candidates locaux.
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:153 [DEBUG] getStats exécuté RTCStatsReport
+renderer.js:165 [VIEWER] IP du mobile détectée: ::1
+renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:287 [VIEWER] Arrêt du polling ICE: tous les candidats reçus.
