@@ -106,38 +106,18 @@ async function startViewerWebRTC() {
             videoElement.play().catch(e => console.error('Erreur lecture vidéo:', e));
             placeholder.style.display = 'none';
 
-            // --- Afficher immédiatement 'Connecté' dans la barre de titre et dans la page ---
-            document.title = 'Connecté';
-            if (connectionStatus) connectionStatus.textContent = 'Connecté';
-
-            // --- Détection de l'IP du mobile via ICE candidates (asynchrone) ---
-            setTimeout(async () => {
-                let remoteIp = null;
-                try {
-                    const stats = await pc.getStats();
-                    console.log('[DEBUG] getStats exécuté', stats);
-                    stats.forEach(report => {
-                        if (report.type === 'remote-candidate') {
-                            if (report.address) remoteIp = report.address;
-                            else if (report.ip) remoteIp = report.ip;
-                        }
-                    });
-                } catch (e) {
-                    console.warn('Impossible de récupérer les stats WebRTC:', e);
-                }
-                if (remoteIp) {
-                    document.title = `Connecté à ${remoteIp}`;
-                    if (connectionStatus) connectionStatus.textContent = `Connecté à ${remoteIp}`;
-                    console.log('[VIEWER] IP du mobile détectée:', remoteIp);
-                } else {
-                    // Ne pas écraser le titre si déjà 'Connecté'
-                    console.log('[VIEWER] IP du mobile non détectée');
-                }
-            }, 1000);
+            // Affiche l'IP reçue dans l'offre si elle existe (ne pas écraser par ICE)
+            if (window.lastOfferMobileIp) {
+                document.title = `Connecté à ${window.lastOfferMobileIp}`;
+                if (connectionStatus) connectionStatus.textContent = `Connecté à ${window.lastOfferMobileIp}`;
+                console.log('[VIEWER] IP du mobile reçue dans l\'offre (persistée):', window.lastOfferMobileIp);
+            } else {
+                document.title = 'Connecté';
+                if (connectionStatus) connectionStatus.textContent = 'Connecté';
+                console.error('[VIEWER][ontrack] window.lastOfferMobileIp est undefined !');
+            }
         }
     };
-
-
 
     // Récupérer l'offre du mobile
     console.log('[VIEWER] Utilisation du peerId:', peerId);
@@ -147,6 +127,15 @@ async function startViewerWebRTC() {
         return;
     }
     console.log('[VIEWER] Offre reçue pour peerId', peerId, ':', offer);
+// Log détaillé de toutes les clés du payload reçu
+Object.keys(offer).forEach(key => {
+    console.log(`[VIEWER][PAYLOAD] ${key}:`, offer[key]);
+});
+    // Affiche l'IP du mobile si présente dans l'offre
+    if (offer.mobileIp) {
+        window.lastOfferMobileIp = offer.mobileIp;
+        console.log('[VIEWER] window.lastOfferMobileIp défini à', window.lastOfferMobileIp);
+    }
     await pc.setRemoteDescription(new RTCSessionDescription(offer));
 
     // Créer et envoyer la réponse

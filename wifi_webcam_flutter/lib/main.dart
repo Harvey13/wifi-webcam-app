@@ -4,6 +4,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -27,6 +28,35 @@ class StreamerPage extends StatefulWidget {
 }
 
 class _StreamerPageState extends State<StreamerPage> {
+  // Récupère l'adresse IP locale WiFi du mobile
+  Future<String?> getWifiIp() async {
+    try {
+      final interfaces = await NetworkInterface.list(type: InternetAddressType.IPv4);
+      if (Platform.isAndroid) {
+        debugPrint('[getWifiIp][Android] Interfaces détectées:');
+        for (final interface in interfaces) {
+          debugPrint('  - ${interface.name}: ${interface.addresses.map((a) => a.address).join(', ')}');
+        }
+      }
+      for (final interface in interfaces) {
+        // Filtre les interfaces WiFi courantes (Android/iOS)
+        if (interface.name.contains('wlan') || interface.name.contains('en')) {
+          for (final addr in interface.addresses) {
+            if (!addr.isLoopback && addr.type == InternetAddressType.IPv4) {
+              if (Platform.isAndroid) {
+                debugPrint('[getWifiIp][Android] Adresse IP WiFi détectée: ${addr.address}');
+              }
+              return addr.address;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Erreur getWifiIp: $e');
+    }
+    return null;
+  }
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? qrController;
   bool scanned = false;
@@ -143,12 +173,17 @@ class _StreamerPageState extends State<StreamerPage> {
       return;
     }
     final offerUrl = '$_serverRoot/api/offer/${_peerId}';
+    final mobileIp = await getWifiIp();
+    final offerPayload = {
+      ...offer.toMap(),
+      'mobileIp': mobileIp,
+    };
     print('[MOBILE][WEBRTC] POST OFFER: $offerUrl');
     try {
       final resp = await http.post(
         Uri.parse(offerUrl),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode(offer.toMap()),
+        body: json.encode(offerPayload),
       );
       print('[MOBILE][WEBRTC] POST OFFER status: ${resp.statusCode}, body: ${resp.body}');
       if (resp.statusCode != 200) {
@@ -254,8 +289,8 @@ class _StreamerPageState extends State<StreamerPage> {
             child: RTCVideoView(_localRenderer, mirror: false),
           ),
           Positioned(
-            top: 16,
-            right: 16,
+            bottom: 24,
+            right: 24,
             child: Material(
               color: Colors.transparent,
               child: IconButton(
