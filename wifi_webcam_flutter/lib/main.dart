@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() => runApp(const MyApp());
 
@@ -70,9 +71,26 @@ class _StreamerPageState extends State<StreamerPage> {
           print('[MOBILE][QR] serverRoot extrait: $_serverRoot');
         });
         controller.pauseCamera();
-        _startWebRTC();
+        _checkWiFiAndStartWebRTC(context);
       }
     });
+  }
+
+  Future<void> _checkWiFiAndStartWebRTC(BuildContext context) async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult != ConnectivityResult.wifi) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Icon(Icons.signal_wifi_off, color: Colors.white, size: 32),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+          elevation: 8,
+        ),
+      );
+      return;
+    }
+    _startWebRTC();
   }
 
   Future<void> _startWebRTC() async {
@@ -230,39 +248,28 @@ class _StreamerPageState extends State<StreamerPage> {
             borderWidth: 10),
       );
 
-  Widget _buildStreamView() => Column(
+  Widget _buildStreamView() => Stack(
         children: [
-          Expanded(child: RTCVideoView(_localRenderer, mirror: false)),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.cameraswitch),
-                  label: const Text('Changer de caméra'),
-                  onPressed: () async {
-                    if (_localStream != null) {
-                      final videoTrack = _localStream!.getVideoTracks().first;
-                      await Helper.switchCamera(videoTrack);
-                    }
-                  },
-                ),
-              ],
+          Positioned.fill(
+            child: RTCVideoView(_localRenderer, mirror: false),
+          ),
+          Positioned(
+            top: 16,
+            right: 16,
+            child: Material(
+              color: Colors.transparent,
+              child: IconButton(
+                icon: const Icon(Icons.cameraswitch, color: Colors.white, size: 32),
+                onPressed: () async {
+                  if (_localStream != null) {
+                    final videoTrack = _localStream!.getVideoTracks().first;
+                    await Helper.switchCamera(videoTrack);
+                  }
+                },
+                tooltip: 'Changer de caméra',
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                qrController?.resumeCamera();
-                setState(() {
-                  scanned = false;
-                });
-              },
-              child: const Text('Scanner un autre QR code'),
-            ),
-          )
         ],
       );
 }
