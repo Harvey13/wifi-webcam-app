@@ -1,16 +1,11 @@
-// Récupération des éléments DOM
-const detectionStatus = document.getElementById('detection-status');
+// Récupération des éléments DOM (uniquement ceux qui existent encore)
 const ipAddress = document.getElementById('ip-address');
-const ipInfo = document.getElementById('ip-info');
 const errorBox = document.getElementById('error-box');
 const errorMessage = document.getElementById('error-message');
-const successBox = document.getElementById('success-box');
 const qrContainer = document.getElementById('qr-container');
-const connectionUrl = document.getElementById('connection-url');
-const refreshIpBtn = document.getElementById('refresh-ip');
-const connectionStatus = document.getElementById('connection-status');
 const videoElement = document.getElementById('videoElement');
 const placeholder = document.getElementById('placeholder');
+const connectionStatus = document.getElementById('connection-status');
 
 // Variables globales
 let detectedIp = null;
@@ -32,30 +27,17 @@ function setupElectronListeners() {
     // Écouter les événements d'adresse Wi-Fi
     window.api.onWifiAddress((ip) => {
         detectedIp = ip;
-        detectionStatus.textContent = 'Adresse détectée';
-        ipAddress.textContent = ip;
-        
-        // Construire l'URL de connexion (HTTP uniquement)
+        if (ipAddress) ipAddress.textContent = ip;
+        // Générer le QR code (fonctionnalité conservée)
         const url = `http://${ip}:3000/camera`;
-        connectionUrl.textContent = url;
-        
-        // Afficher les informations
-        ipInfo.style.display = 'block';
-        successBox.style.display = 'block';
-        qrContainer.style.display = 'block';
-        
-        // Générer le QR code
         generateQRCode(url);
+        if (qrContainer) qrContainer.style.display = 'block';
     });
     
     window.api.onWifiError((error) => {
-        detectionStatus.textContent = 'Erreur de détection';
-        errorMessage.textContent = error;
-        errorBox.style.display = 'block';
-        successBox.style.display = 'none';
-        qrContainer.style.display = 'none';
-        ipInfo.style.display = 'none'; 
-        connectionUrl.textContent = '-'; 
+        if (errorMessage) errorMessage.textContent = error;
+        if (errorBox) errorBox.style.display = 'block';
+        if (qrContainer) qrContainer.style.display = 'none';
         if (videoElement) videoElement.style.display = 'none';
         if (placeholder) {
             placeholder.textContent = "Erreur réseau : Le WiFi est désactivé ou déconnecté. Veuillez activer le WiFi pour utiliser l’application.";
@@ -64,31 +46,13 @@ function setupElectronListeners() {
         if (connectionStatus) connectionStatus.textContent = 'Erreur réseau';
     });
 
-    // Affichage des versions Electron/Node/Chrome
-    const versions = window.api.versions;
-    document.getElementById('chrome-version').textContent = versions.chrome || '-';
-    document.getElementById('node-version').textContent = versions.node || '-';
-    document.getElementById('electron-version').textContent = versions.electron || '-';
+
 }
 
 // Configuration de l'interface utilisateur
 function setupUI() {
     // Bouton pour actualiser l'adresse IP
-    refreshIpBtn.addEventListener('click', async () => {
-        detectionStatus.textContent = 'Détection en cours...';
-        ipInfo.style.display = 'none';
-        errorBox.style.display = 'none';
-        successBox.style.display = 'none';
-        qrContainer.style.display = 'none';
-        
-        try {
-            await window.api.getWifiAddress();
-        } catch (error) {
-            detectionStatus.textContent = 'Erreur de détection';
-            errorMessage.textContent = error.toString();
-            errorBox.style.display = 'block';
-        }
-    });
+
 }
 
 // Fonction pour générer le QR code

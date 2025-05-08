@@ -1,7 +1,7 @@
-renderer.js:301 Document chargé, démarrage de l'application...
-renderer.js:21 Initialisation de l'application...
-renderer.js:177 [VIEWER] Utilisation du peerId: 1821340090263543
-VM4 sandbox_bundle:2 Electron Security Warning (Insecure Content-Security-Policy) This renderer process has either no Content Security
+ Document chargé, démarrage de l'application...
+ Initialisation de l'application...
+ [VIEWER] Utilisation du peerId: 4813341387019610
+ Electron Security Warning (Insecure Content-Security-Policy) This renderer process has either no Content Security
   Policy set or a policy with "unsafe-eval" enabled. This exposes users of
   this app to unnecessary security risks.
 
@@ -9,66 +9,321 @@ For more information and help, consult
 https://electronjs.org/docs/tutorial/security.
 This warning will not show up
 once the app is packaged.
-warnAboutInsecureCSP @ VM4 sandbox_bundle:2
-192.168.1.147:3000/api/offer/1821340090263543:1 
+warnAboutInsecureCSP @ node:electron/js2c/sandbox_bundle:2
+192.168.1.147:3000/api/offer/4813341387019610:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
         
         
        Failed to load resource: the server responded with a status of 404 (Not Found)
-renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
-192.168.1.147:3000/api/offer/1821340090263543:1 
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
         
         
        Failed to load resource: the server responded with a status of 404 (Not Found)
-renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
-192.168.1.147:3000/api/offer/1821340090263543:1 
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
         
         
        Failed to load resource: the server responded with a status of 404 (Not Found)
-renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
-192.168.1.147:3000/api/offer/1821340090263543:1 
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
         
         
        Failed to load resource: the server responded with a status of 404 (Not Found)
-renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
-192.168.1.147:3000/api/offer/1821340090263543:1 
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
         
         
        Failed to load resource: the server responded with a status of 404 (Not Found)
-renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 404
-renderer.js:243 [VIEWER] Tentative GET /api/offer/1821340090263543 | status: 200
-renderer.js:246 [VIEWER] Offre trouvée pour peerId 1821340090263543: Object
-renderer.js:183 [VIEWER] Offre reçue pour peerId 1821340090263543 : Object
-renderer.js:140 [VIEWER] Track vidéo reçu, affichage du flux !
-renderer.js:196 [VIEWER] POST ANSWER status: 200
-renderer.js:201 [VIEWER] Réponse WebRTC envoyée avec succès pour peerId 1821340090263543
-renderer.js:270 [VIEWER] ICE candidates distants reçus (18): Array(18)
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:211 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
-renderer.js:211 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
-renderer.js:211 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:218 [VIEWER] Fin de génération des ICE candidates locaux.
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:275 [VIEWER] ICE candidate distant ajouté: Object
-renderer.js:153 [DEBUG] getStats exécuté RTCStatsReport
-renderer.js:165 [VIEWER] IP du mobile détectée: ::1
-renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
-renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
-renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
-renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
-renderer.js:270 [VIEWER] ICE candidates distants reçus (0): Array(0)
-renderer.js:287 [VIEWER] Arrêt du polling ICE: tous les candidats reçus.
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+192.168.1.147:3000/api/offer/4813341387019610:1 
+        
+        
+       Failed to load resource: the server responded with a status of 404 (Not Found)
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 404
+renderer.js:241 [VIEWER] Tentative GET /api/offer/4813341387019610 | status: 200
+renderer.js:244 [VIEWER] Offre trouvée pour peerId 4813341387019610: Object
+renderer.js:181 [VIEWER] Offre reçue pour peerId 4813341387019610 : Object
+renderer.js:136 [VIEWER] Track vidéo reçu, affichage du flux !
+renderer.js:194 [VIEWER] POST ANSWER status: 200
+renderer.js:199 [VIEWER] Réponse WebRTC envoyée avec succès pour peerId 4813341387019610
+renderer.js:268 [VIEWER] ICE candidates distants reçus (18): Array(18)
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:273 [VIEWER] ICE candidate distant ajouté: Object
+renderer.js:209 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
+renderer.js:209 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
+renderer.js:209 [VIEWER] ICE candidate local généré, envoi au serveur: RTCIceCandidate
+renderer.js:216 [VIEWER] Fin de génération des ICE candidates locaux.
+renderer.js:150 [DEBUG] getStats exécuté RTCStatsReport
+renderer.js:163 [VIEWER] IP du mobile détectée: 88.174.163.95
+renderer.js:268 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:268 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:268 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:268 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:268 [VIEWER] ICE candidates distants reçus (0): Array(0)
+renderer.js:285 [VIEWER] Arrêt du polling ICE: tous les candidats reçus.

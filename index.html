@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>WiFi Webcam - Mode Visualisation</title>
+    <title>WiFi Webcam Viewer</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -165,7 +165,7 @@
   <body>
     <div class="container">
       <div class="header">
-        <h1>WiFi Webcam - Mode Visualisation</h1>
+        <h1>WiFi Webcam Viewer</h1>
         <div id="connection-status">En attente de connexion...</div>
       </div>
       
@@ -176,15 +176,9 @@
         </div>
         
         <div class="info-panel">
-          <div class="info-box">
-            <h3>Détection de l'adresse réseau</h3>
-            <p>Statut: <span id="detection-status">En cours...</span></p>
-            <div id="ip-info" style="display: none;">
-              <p>Adresse IP détectée: <strong id="ip-address">-</strong></p>
-              <p>URL de connexion:</p>
-              <div class="url-display" id="connection-url">-</div>
-            </div>
-          </div>
+          <div class="info-box" style="text-align:center; font-size:2em;">
+  <span id="ip-address">-</span>
+</div>
           
           <div class="error-box" id="error-box" style="display: none;">
             <h3>Erreur</h3>
@@ -198,17 +192,7 @@
           
           <div class="qr-container" id="qr-container" style="display: none;">
             <div id="qrcode"></div>
-            <p>ou utilisez l'URL ci-dessus</p>
-          </div>
-          
-          <div>
-            <button id="refresh-ip" class="btn">Actualiser l'adresse IP</button>
-          </div>
-          
-          <div class="footer">
-            <p>Version de Chrome: <span id="chrome-version"></span></p>
-            <p>Version de Node: <span id="node-version"></span></p>
-            <p>Version d'Electron: <span id="electron-version"></span></p>
+            
           </div>
         </div>
       </div>
