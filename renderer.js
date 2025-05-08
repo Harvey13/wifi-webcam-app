@@ -8,8 +8,31 @@ const placeholder = document.getElementById('placeholder');
 const connectionStatus = document.getElementById('connection-status');
 
 // Variables globales
+const VERSION_VIEWER = '0.0.1'; // <-- Modifier ici pour changer la version du viewer
 let detectedIp = null;
 let peerId = Math.floor(Math.random() * 1e16).toString(); // ID unique dès le chargement
+
+// Affichage temporaire de la version dans un overlay
+function showVersionOverlay() {
+    let overlay = document.createElement('div');
+    overlay.id = 'version-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '12px';
+    overlay.style.left = '50%';
+    overlay.style.transform = 'translateX(-50%)';
+    overlay.style.background = 'rgba(0,0,0,0.85)';
+    overlay.style.color = '#fff';
+    overlay.style.padding = '7px 22px';
+    overlay.style.borderRadius = '18px';
+    overlay.style.fontSize = '16px';
+    overlay.style.fontWeight = 'bold';
+    overlay.style.zIndex = 9999;
+    overlay.textContent = `WiFi Webcam Viewer v${VERSION_VIEWER}`;
+    document.body.appendChild(overlay);
+    setTimeout(() => {
+        overlay.remove();
+    }, 5000);
+}
 
 // Initialisation de l'application
 function initializeApp() {
@@ -255,6 +278,53 @@ if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
         console.log('Document chargé, démarrage de l\'application...');
         initializeApp();
+        // Affiche la version dans le titre pendant 5s
+        const originalTitle = document.title;
+        document.title = originalTitle + ' - v' + VERSION_VIEWER;
+        setTimeout(() => {
+            document.title = originalTitle;
+        }, 5000);
+        // Ajoute le Toast version sur clic du titre
+        const titleSelector = document.querySelector('title');
+        // Pour Electron ou apps web, le titre est souvent dans le DOM sous .titlebar ou h1/h2, on tente plusieurs options
+        let clickableTitle = document.querySelector('.titlebar') || document.querySelector('h1') || document.querySelector('h2');
+        if (!clickableTitle) {
+            // fallback: créer un titre cliquable si inexistant
+            clickableTitle = document.createElement('h1');
+            clickableTitle.textContent = 'WiFi Webcam Viewer';
+            clickableTitle.style.cursor = 'pointer';
+            document.body.insertBefore(clickableTitle, document.body.firstChild);
+        }
+        clickableTitle.style.cursor = 'pointer';
+        clickableTitle.addEventListener('click', () => {
+            showViewerVersionToast();
+        });
         startViewerWebRTC();
     });
 }
+
+function showViewerVersionToast() {
+    // Supprime l'ancien toast s'il existe
+    const old = document.getElementById('viewer-version-toast');
+    if (old) old.remove();
+    const toast = document.createElement('div');
+    toast.id = 'viewer-version-toast';
+    toast.textContent = 'VERSION_VIEWER: v' + VERSION_VIEWER;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '32px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.background = 'rgba(0,0,0,0.92)';
+    toast.style.color = '#fff';
+    toast.style.padding = '12px 32px';
+    toast.style.borderRadius = '18px';
+    toast.style.fontSize = '16px';
+    toast.style.fontWeight = 'bold';
+    toast.style.zIndex = 99999;
+    toast.style.boxShadow = '0 4px 24px rgba(0,0,0,0.18)';
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.remove();
+    }, 5000);
+}
+

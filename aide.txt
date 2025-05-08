@@ -1,7 +1,7 @@
 cd C:\Users\boby_\Projet\wifi-webcam
 npm run dev
 
-cd wifi_webcam_flutter
+cd C:\Users\boby_\Projet\wifi-webcam\wifi_webcam_flutter
 flutter pub get
 flutter run -d 2201116PG
 
@@ -15,3 +15,10 @@ New-NetFirewallRule `
     -Profile Any
 	
 Remove-NetFirewallRule -DisplayName "WebRTC UDP Ports"
+-----------------------------------------------------------
+
+dans C:\Users\boby_\Projet\wifi-webcam\wifi_webcam_flutter\lib\main.dart
+const String VERSION_MOBILE = '0.0.1'; // <-- Modifier ici pour changer la version mobile
+
+dans C:\Users\boby_\Projet\wifi-webcam\renderer.js
+const VERSION_VIEWER = '0.0.1'; // <-- Modifier ici pour changer la version du viewer

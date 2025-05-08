@@ -9,6 +9,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+const String VERSION_MOBILE = '0.0.1';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -257,7 +259,18 @@ class _StreamerPageState extends State<StreamerPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('WiFi Webcam Streamer'),
+          title: GestureDetector(
+            child: const Text('WiFi Webcam Streamer'),
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('VERSION_MOBILE: v$VERSION_MOBILE'),
+                  duration: const Duration(seconds: 5),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.close),
